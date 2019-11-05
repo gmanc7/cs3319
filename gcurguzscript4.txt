@@ -1,0 +1,14 @@
+USE gcurguzassign2db;
+delete from doctor where licensedate < '1965-01-01';
+/* causes error because there are head doctors that have license date before specified date and there is a foreign key constraint */
+CREATE VIEW patientsHeadoc AS select p.firstName, p.LastName, d.lastName AS docLastName, h.name from patient p join treats t on (p.ohipnumber = t.patientId) join doctor d on (d.licensenumber = t.doctorId) join hospital h on (h.headdocId = d.licenseNumber) where headDocDate > '1995-12-31';
+select * from patientsHeadoc;
+select * from doctor;
+SELECT * FROM treats;
+delete from doctor where lastName = "Clooney";
+SELECT * FROM doctor;
+SELECT * FROM treats;
+SELECT * FROM doctor;
+delete from doctor where specialty = "Surgeon";
+/* the delete command did not work because there is a head doctor who is a surgeon and headdocID is a primary key in hospital which is NOT NULL so it cannot be deleted */
+

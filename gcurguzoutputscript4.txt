@@ -1,0 +1,125 @@
+Warning: Using a password on the command line interface can be insecure.
+ERROR 1451 (23000) at line 2: Cannot delete or update a parent row: a foreign key constraint fails (`gcurguzassign2db`.`hospital`, CONSTRAINT `hospital_ibfk_1` FOREIGN KEY (`headdocid`) REFERENCES `doctor` (`licensenumber`))
+--------------
+delete from doctor where licensedate < '1965-01-01'
+--------------
+
+--------------
+CREATE VIEW patientsHeadoc AS select p.firstName, p.LastName, d.lastName AS docLastName, h.name from patient p join treats t on (p.ohipnumber = t.patientId) join doctor d on (d.licensenumber = t.doctorId) join hospital h on (h.headdocId = d.licenseNumber) where headDocDate > '1995-12-31'
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+select * from patientsHeadoc
+--------------
+
++-----------+----------+-------------+------------+
+| firstName | LastName | docLastName | name       |
++-----------+----------+-------------+------------+
+| Bill      | Gellar   | Shabado     | St. Joseph |
+| Colleen   | Gellar   | Shabado     | St. Joseph |
+| Scotty    | Bing     | Shabado     | St. Joseph |
++-----------+----------+-------------+------------+
+3 rows in set (0.00 sec)
+
+--------------
+select * from doctor
+--------------
+
++----------------------+------------+---------------+--------------+-------------+----------------+
+| firstname            | lastname   | licensenumber | specialty    | licensedate | worksinhoscode |
++----------------------+------------+---------------+--------------+-------------+----------------+
+| CreatingThiScriptWas | Annoying   | GC07          | Surgeon      | 1998-02-04  | ABC            |
+| Joey                 | Shabado    | GD56          | Podiatrist   | 1960-06-24  | BBC            |
+| Ross                 | Clooney    | HT45          | Surgeon      | 1987-09-20  | DDE            |
+| Mandy                | Webster    | JK78          | Surgeon      | 1990-08-08  | BBC            |
+| Bernie               | Kavorikian | RD34          | Urologist    | 1980-09-09  | BBC            |
+| Colleen              | Aziz       | SE66          | Surgeon      | 1989-08-24  | ABC            |
+| Ben                  | Spock      | YT67          | Pediatrician | 1955-02-20  | DDE            |
++----------------------+------------+---------------+--------------+-------------+----------------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM treats
+--------------
+
++-----------+----------+
+| patientID | doctorID |
++-----------+----------+
+| 110112113 | GD56     |
+| 333444555 | GD56     |
+| 667766777 | GD56     |
+| 111222111 | HT45     |
+| 111222333 | HT45     |
+| 444555666 | HT45     |
+| 667766777 | HT45     |
+| 777777777 | HT45     |
+| 111222333 | JK78     |
+| 444555666 | JK78     |
+| 667766777 | JK78     |
+| 111222333 | SE66     |
++-----------+----------+
+12 rows in set (0.00 sec)
+
+--------------
+delete from doctor where lastName = "Clooney"
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++----------------------+------------+---------------+--------------+-------------+----------------+
+| firstname            | lastname   | licensenumber | specialty    | licensedate | worksinhoscode |
++----------------------+------------+---------------+--------------+-------------+----------------+
+| CreatingThiScriptWas | Annoying   | GC07          | Surgeon      | 1998-02-04  | ABC            |
+| Joey                 | Shabado    | GD56          | Podiatrist   | 1960-06-24  | BBC            |
+| Mandy                | Webster    | JK78          | Surgeon      | 1990-08-08  | BBC            |
+| Bernie               | Kavorikian | RD34          | Urologist    | 1980-09-09  | BBC            |
+| Colleen              | Aziz       | SE66          | Surgeon      | 1989-08-24  | ABC            |
+| Ben                  | Spock      | YT67          | Pediatrician | 1955-02-20  | DDE            |
++----------------------+------------+---------------+--------------+-------------+----------------+
+6 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM treats
+--------------
+
++-----------+----------+
+| patientID | doctorID |
++-----------+----------+
+| 110112113 | GD56     |
+| 333444555 | GD56     |
+| 667766777 | GD56     |
+| 111222333 | JK78     |
+| 444555666 | JK78     |
+| 667766777 | JK78     |
+| 111222333 | SE66     |
++-----------+----------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++----------------------+------------+---------------+--------------+-------------+----------------+
+| firstname            | lastname   | licensenumber | specialty    | licensedate | worksinhoscode |
++----------------------+------------+---------------+--------------+-------------+----------------+
+| CreatingThiScriptWas | Annoying   | GC07          | Surgeon      | 1998-02-04  | ABC            |
+| Joey                 | Shabado    | GD56          | Podiatrist   | 1960-06-24  | BBC            |
+| Mandy                | Webster    | JK78          | Surgeon      | 1990-08-08  | BBC            |
+| Bernie               | Kavorikian | RD34          | Urologist    | 1980-09-09  | BBC            |
+| Colleen              | Aziz       | SE66          | Surgeon      | 1989-08-24  | ABC            |
+| Ben                  | Spock      | YT67          | Pediatrician | 1955-02-20  | DDE            |
++----------------------+------------+---------------+--------------+-------------+----------------+
+6 rows in set (0.00 sec)
+
+ERROR 1451 (23000) at line 12: Cannot delete or update a parent row: a foreign key constraint fails (`gcurguzassign2db`.`hospital`, CONSTRAINT `hospital_ibfk_1` FOREIGN KEY (`headdocid`) REFERENCES `doctor` (`licensenumber`))
+--------------
+delete from doctor where specialty = "Surgeon"
+--------------
+
+Bye

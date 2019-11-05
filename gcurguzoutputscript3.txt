@@ -1,0 +1,176 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SELECT lastname FROM patient
+--------------
+
++----------+
+| lastname |
++----------+
+| Gellar   |
+| Brown    |
+| Green    |
+| Gellar   |
+| Gellar   |
+| Bing     |
+| Curguz   |
++----------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT DISTINCT lastname FROM patient
+--------------
+
++----------+
+| lastname |
++----------+
+| Gellar   |
+| Brown    |
+| Green    |
+| Bing     |
+| Curguz   |
++----------+
+5 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor ORDER BY lastname asc
+--------------
+
++----------------------+------------+---------------+--------------+-------------+----------------+
+| firstname            | lastname   | licensenumber | specialty    | licensedate | worksinhoscode |
++----------------------+------------+---------------+--------------+-------------+----------------+
+| CreatingThiScriptWas | Annoying   | GC07          | Surgeon      | 1998-02-04  | ABC            |
+| Colleen              | Aziz       | SE66          | Surgeon      | 1989-08-24  | ABC            |
+| Ross                 | Clooney    | HT45          | Surgeon      | 1987-09-20  | DDE            |
+| Bernie               | Kavorikian | RD34          | Urologist    | 1980-09-09  | BBC            |
+| Joey                 | Shabado    | GD56          | Podiatrist   | 1960-06-24  | BBC            |
+| Ben                  | Spock      | YT67          | Pediatrician | 1955-02-20  | DDE            |
+| Mandy                | Webster    | JK78          | Surgeon      | 1990-08-08  | BBC            |
++----------------------+------------+---------------+--------------+-------------+----------------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT name, hoscode FROM hospital WHERE numbeds > 1500
+--------------
+
++----------+---------+
+| name     | hoscode |
++----------+---------+
+| Victoria | ABC     |
++----------+---------+
+1 row in set (0.00 sec)
+
+--------------
+select lastname, firstname from doctor d join hospital h on (d.worksinhoscode = h.hoscode AND h.name = "St. Joseph")
+--------------
+
++------------+-----------+
+| lastname   | firstname |
++------------+-----------+
+| Shabado    | Joey      |
+| Webster    | Mandy     |
+| Kavorikian | Bernie    |
++------------+-----------+
+3 rows in set (0.00 sec)
+
+--------------
+select lastname, firstname from patient where lastname like 'G%'
+--------------
+
++----------+-----------+
+| lastname | firstname |
++----------+-----------+
+| Gellar   | Bill      |
+| Green    | Jon       |
+| Gellar   | Colleen   |
+| Gellar   | Sean      |
++----------+-----------+
+4 rows in set (0.00 sec)
+
+--------------
+select p.lastname, p.firstname from patient p join treats  t on (p.ohipNumber = t.patientId) join doctor d on (t.doctorid = d.licenseNumber and d.lastname = "Clooney")
+--------------
+
++----------+-----------+
+| lastname | firstname |
++----------+-----------+
+| Gellar   | Sean      |
++----------+-----------+
+1 row in set (0.00 sec)
+
+--------------
+select h.name, h.city, d.lastname from hospital h join doctor d on (h.headDocId = d.licenseNumber)
+--------------
+
++------------+----------+----------+
+| name       | city     | lastname |
++------------+----------+----------+
+| Victoria   | London   | Spock    |
+| St. Joseph | London   | Shabado  |
+| Victoria   | Victoria | Aziz     |
++------------+----------+----------+
+3 rows in set (0.00 sec)
+
+--------------
+select sum(numBeds) as "Total Number of Beds" from hospital
+--------------
+
++----------------------+
+| Total Number of Beds |
++----------------------+
+|                 3800 |
++----------------------+
+1 row in set (0.00 sec)
+
+--------------
+select d.lastName from doctor d join hospital h on (d.licenseNumber = h.headDocId)
+--------------
+
++----------+
+| lastName |
++----------+
+| Shabado  |
+| Aziz     |
+| Spock    |
++----------+
+3 rows in set (0.00 sec)
+
+--------------
+select d.firstName, d.lastName from doctor d join hospital h on (h.hoscode = d.worksinhoscode) where d.specialty = "Surgeon"
+--------------
+
++----------------------+----------+
+| firstName            | lastName |
++----------------------+----------+
+| Mandy                | Webster  |
+| Ross                 | Clooney  |
+| CreatingThiScriptWas | Annoying |
+| Colleen              | Aziz     |
++----------------------+----------+
+4 rows in set (0.01 sec)
+
+--------------
+select d.firstName from doctor d left join treats t on (d.licenseNumber = t.doctorId) where isNull(patientId)
+--------------
+
++----------------------+
+| firstName            |
++----------------------+
+| CreatingThiScriptWas |
+| Bernie               |
++----------------------+
+2 rows in set (0.00 sec)
+
+--------------
+select d.firstName, d.lastName, count(*) as cnt from doctor d join treats t on (d.licenseNumber = t.doctorId) group by d.firstName, d.lastName having cnt > 1
+--------------
+
++-----------+----------+-----+
+| firstName | lastName | cnt |
++-----------+----------+-----+
+| Ben       | Spock    |   4 |
+| Joey      | Shabado  |   3 |
+| Mandy     | Webster  |   3 |
++-----------+----------+-----+
+3 rows in set (0.00 sec)
+
+Bye

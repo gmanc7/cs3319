@@ -1,0 +1,44 @@
+USE gcurguzassign2db;
+/* Query 1 */
+SELECT lastname FROM patient;
+
+/* Query 2 */
+
+SELECT DISTINCT lastname FROM patient;
+
+/* Query 3 */
+
+SELECT * FROM doctor ORDER BY lastname asc;
+
+/* Query 4 */
+
+SELECT name, hoscode FROM hospital WHERE numbeds > 1500;
+
+/* Query 5 */
+select lastname, firstname from doctor d join hospital h on (d.worksinhoscode = h.hoscode AND h.name = "St. Joseph");
+
+/* Query 6 */
+select lastname, firstname from patient where lastname like 'G%';
+
+/* Query 7 */
+
+select p.lastname, p.firstname from patient p join treats  t on (p.ohipNumber = t.patientId) join doctor d on (t.doctorid = d.licenseNumber and d.lastname = "Clooney") ;
+
+/* Query 8 */
+select h.name, h.city, d.lastname from hospital h join doctor d on (h.headDocId = d.licenseNumber);
+
+/* Query 9 */
+select sum(numBeds) as "Total Number of Beds" from hospital;
+
+/* Query 10 */
+select d.lastName from doctor d join hospital h on (d.licenseNumber = h.headDocId);
+
+/* Query 11 */
+select d.firstName, d.lastName from doctor d join hospital h on (h.hoscode = d.worksinhoscode) where d.specialty = "Surgeon";
+
+/* Query 12 */
+select d.firstName from doctor d left join treats t on (d.licenseNumber = t.doctorId) where isNull(patientId);
+
+/* Query 13 */
+select d.firstName, d.lastName, count(*) as cnt from doctor d join treats t on (d.licenseNumber = t.doctorId) group by d.firstName, d.lastName having cnt > 1;
+

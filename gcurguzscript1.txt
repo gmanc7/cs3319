@@ -1,0 +1,46 @@
+SHOW DATABASES;
+DROP DATABASE IF EXISTS gcurguzassign2db;
+CREATE DATABASE gcurguzassign2db;
+USE gcurguzassign2db;
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON gcurguzassign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+SHOW TABLES;
+CREATE TABLE doctor (
+	firstname VARCHAR(20), 
+	lastname VARCHAR(20),
+	licensenumber CHAR(4) NOT NULL,
+	specialty VARCHAR(30),
+	licensedate DATE,
+	worksinhoscode CHAR(3),
+	PRIMARY KEY(licensenumber)
+);
+CREATE TABLE hospital (
+	name VARCHAR(20),
+	city VARCHAR(20),
+	province VARCHAR(2),
+	numbeds INT NOT NULL,
+	hoscode CHAR(3) NOT NULL,
+	headDocDate DATE,
+	headdocid CHAR(4) NOT NULL,
+	PRIMARY KEY(hoscode),
+	FOREIGN KEY (headdocid) REFERENCES doctor(licensenumber) 
+);
+CREATE TABLE patient (
+	firstname VARCHAR(20),
+	lastname VARCHAR(20),
+	ohipnumber INT NOT NULL,
+	PRIMARY KEY(ohipnumber)
+);
+CREATE TABLE treats (
+	patientID INT NOT NULL,
+	doctorID CHAR(4) NOT NULL,
+	PRIMARY KEY CLUSTERED (patientID, doctorID),
+	FOREIGN KEY (patientID) REFERENCES patient(ohipnumber) ON DELETE CASCADE,
+	FOREIGN KEY (doctorID) REFERENCES doctor(licensenumber) ON DELETE CASCADE
+);
+ALTER TABLE doctor
+ADD FOREIGN KEY (worksinhoscode) REFERENCES hospital(hoscode) ON DELETE SET NULL;
+SHOW TABLES;

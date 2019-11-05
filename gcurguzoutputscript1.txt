@@ -1,0 +1,140 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SHOW DATABASES
+--------------
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| gcurguzassign2db   |
+| mysql              |
+| performance_schema |
+| vetoffice          |
++--------------------+
+5 rows in set (0.00 sec)
+
+--------------
+DROP DATABASE IF EXISTS gcurguzassign2db
+--------------
+
+Query OK, 6 rows affected (0.32 sec)
+
+--------------
+CREATE DATABASE gcurguzassign2db
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+GRANT USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+GRANT ALL PRIVILEGES ON gcurguzassign2db.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SHOW TABLES
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+CREATE TABLE doctor (
+	firstname VARCHAR(20), 
+	lastname VARCHAR(20),
+	licensenumber CHAR(4) NOT NULL,
+	specialty VARCHAR(30),
+	licensedate DATE,
+	worksinhoscode CHAR(3),
+	PRIMARY KEY(licensenumber)
+)
+--------------
+
+Query OK, 0 rows affected (0.05 sec)
+
+--------------
+CREATE TABLE hospital (
+	name VARCHAR(20),
+	city VARCHAR(20),
+	province VARCHAR(2),
+	numbeds INT NOT NULL,
+	hoscode CHAR(3) NOT NULL,
+	headDocDate DATE,
+	headdocid CHAR(4) NOT NULL,
+	PRIMARY KEY(hoscode),
+	FOREIGN KEY (headdocid) REFERENCES doctor(licensenumber) 
+)
+--------------
+
+Query OK, 0 rows affected (0.07 sec)
+
+--------------
+CREATE TABLE patient (
+	firstname VARCHAR(20),
+	lastname VARCHAR(20),
+	ohipnumber INT NOT NULL,
+	PRIMARY KEY(ohipnumber)
+)
+--------------
+
+Query OK, 0 rows affected (0.04 sec)
+
+--------------
+CREATE TABLE treats (
+	patientID INT NOT NULL,
+	doctorID CHAR(4) NOT NULL,
+	PRIMARY KEY CLUSTERED (patientID, doctorID),
+	FOREIGN KEY (patientID) REFERENCES patient(ohipnumber) ON DELETE CASCADE,
+	FOREIGN KEY (doctorID) REFERENCES doctor(licensenumber) ON DELETE CASCADE
+)
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+ALTER TABLE doctor
+ADD FOREIGN KEY (worksinhoscode) REFERENCES hospital(hoscode) ON DELETE SET NULL
+--------------
+
+Query OK, 0 rows affected (0.26 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+SHOW TABLES
+--------------
+
++----------------------------+
+| Tables_in_gcurguzassign2db |
++----------------------------+
+| doctor                     |
+| hospital                   |
+| patient                    |
+| treats                     |
++----------------------------+
+4 rows in set (0.00 sec)
+
+Bye
